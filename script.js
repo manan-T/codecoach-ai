@@ -50,7 +50,7 @@ async function callAI(promptText) {
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Authorization": "Bearer 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",
+      "Authorization": "Bearer API_KEY",
       "Content-Type": "application/json",
       "HTTP-Referer": "https://replit.com/@manantiwari392",
       "X-Title": "CodeCoachAI"
