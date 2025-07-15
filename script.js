@@ -1,8 +1,75 @@
 let editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
   lineNumbers: true,
   mode: "javascript",
-  theme: "default"
+  theme: "default",
+  autoCloseBrackets: true,
+  matchBrackets: true,
+  indentUnit: 2,
+  tabSize: 2
 });
+
+const languageExamples = {
+  javascript: `function greet(name) {
+  for (let i = 0; i < 5; i++) {
+    console.log("Hello, " + name);
+  }
+}
+
+greet("Replit");`,
+  python: `def greet(name):
+    for i in range(5):
+        print(f"Hello, {name}")
+
+greet("Replit")`,
+  java: `public class HelloWorld {
+    public static void main(String[] args) {
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Hello, Replit");
+        }
+    }
+}`,
+  cpp: `#include <iostream>
+using namespace std;
+
+int main() {
+    for (int i = 0; i < 5; i++) {
+        cout << "Hello, Replit" << endl;
+    }
+    return 0;
+}`,
+  html: `<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+    <h1>Hello, Replit!</h1>
+    <p>Welcome to my website</p>
+</body>
+</html>`,
+  css: `body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}`
+};
+
+function changeLanguage() {
+  const language = document.getElementById("language-select").value;
+  editor.setOption("mode", language === "cpp" ? "text/x-c++src" : language);
+  editor.setValue(languageExamples[language]);
+}
+
+function changeTheme() {
+  const theme = document.getElementById("theme-select").value;
+  editor.setOption("theme", theme);
+}
 
 async function callAI(promptText) {
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -45,6 +112,71 @@ async function askQuestion() {
   updateSuggestion("🤔 Asking...");
   const answer = await callAI(prompt);
   updateSuggestion(answer);
+}
+
+async function formatCode() {
+  const code = editor.getValue();
+  const language = document.getElementById("language-select").value;
+  const prompt = `Format and beautify this ${language} code with proper indentation and spacing:\n\n${code}`;
+  updateSuggestion("✨ Formatting...");
+  const formatted = await callAI(prompt);
+  updateSuggestion(formatted);
+}
+
+async function validateCode() {
+  const code = editor.getValue();
+  const language = document.getElementById("language-select").value;
+  const prompt = `Validate this ${language} code for syntax errors, potential issues, and best practices:\n\n${code}`;
+  updateSuggestion("✅ Validating...");
+  const validation = await callAI(prompt);
+  updateSuggestion(validation);
+}
+
+async function optimizeCode() {
+  const code = editor.getValue();
+  const language = document.getElementById("language-select").value;
+  const prompt = `Optimize this ${language} code for better performance, readability, and maintainability:\n\n${code}`;
+  updateSuggestion("⚡ Optimizing...");
+  const optimized = await callAI(prompt);
+  updateSuggestion(optimized);
+}
+
+async function generateDocumentation() {
+  const code = editor.getValue();
+  const language = document.getElementById("language-select").value;
+  const prompt = `Generate comprehensive documentation for this ${language} code including function descriptions, parameters, and usage examples:\n\n${code}`;
+  updateSuggestion("📝 Generating docs...");
+  const docs = await callAI(prompt);
+  updateSuggestion(docs);
+}
+
+async function executeCode() {
+  const code = editor.getValue();
+  const language = document.getElementById("language-select").value;
+  const outputDiv = document.getElementById("code-output");
+  
+  outputDiv.innerHTML = "🚀 Executing code...";
+  
+  if (language === "javascript") {
+    try {
+      const originalLog = console.log;
+      let output = "";
+      console.log = function(...args) {
+        output += args.join(" ") + "\n";
+      };
+      
+      eval(code);
+      console.log = originalLog;
+      outputDiv.innerHTML = output || "✅ Code executed successfully (no output)";
+    } catch (error) {
+      outputDiv.innerHTML = `❌ Error: ${error.message}`;
+    }
+  } else {
+    // For other languages, simulate execution with AI
+    const prompt = `Simulate the execution of this ${language} code and show what the output would be:\n\n${code}`;
+    const result = await callAI(prompt);
+    outputDiv.innerHTML = `📝 Simulated output:\n${result}`;
+  }
 }
 
 function updateSuggestion(text) {

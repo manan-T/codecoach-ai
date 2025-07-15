@@ -7,29 +7,33 @@
   
   <!-- CodeMirror CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/monokai.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material.min.css" />
   
   <!-- Custom Styling -->
   <style>
     body {
       margin: 0;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     #editor-wrapper {
       margin-right: 300px;
-      height: 100vh;
+      height: calc(100vh - 80px);
+      margin-top: 80px;
     }
 
     .CodeMirror {
-      height: 100vh;
+      height: calc(100vh - 80px);
     }
 
     #ai-suggestions {
-      position: absolute;
-      top: 0;
+      position: fixed;
+      top: 80px;
       right: 0;
       width: 300px;
-      height: 100vh;
+      height: calc(100vh - 80px);
       background: #f9fafb;
       border-left: 1px solid #ddd;
       padding: 16px;
@@ -66,6 +70,12 @@
 
 <body>
 
+  <!-- Project Header -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: center;">
+    <h1 style="margin: 0; font-size: 24px;">🤖 CodeCoach AI</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Intelligent Code Analysis & Suggestions</p>
+  </div>
+
   <!-- Code Editor Container -->
   <div id="code-editor-container">
     <textarea id="code-editor">// Start coding here...</textarea>
@@ -73,16 +83,53 @@
 
   <!-- AI Suggestion Sidebar -->
   <div id="ai-suggestions">
-    <h3>💡 AI Suggestions</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3 style="margin: 0;">💡 AI Suggestions</h3>
+      <select id="theme-select" onchange="changeTheme()">
+        <option value="default">Default</option>
+        <option value="monokai">Monokai</option>
+        <option value="dracula">Dracula</option>
+        <option value="material">Material</option>
+      </select>
+    </div>
+    <div style="margin-bottom: 15px;">
+      <label for="language-select">Language:</label>
+      <select id="language-select" onchange="changeLanguage()">
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+      </select>
+    </div>
     <div id="suggestion-text">No suggestions yet.</div>
     <button onclick="explainCode()">🧠 Explain Code</button>
     <button onclick="fixBug()">🛠 Fix Bug</button>
+    <button onclick="formatCode()">✨ Format Code</button>
+    <button onclick="validateCode()">✅ Validate Code</button>
+    <button onclick="optimizeCode()">⚡ Optimize Code</button>
+    <button onclick="generateDocumentation()">📝 Generate Docs</button>
     <button onclick="askQuestion()">❓ Ask Question</button>
+    <button onclick="executeCode()">▶️ Run Code</button>
+    
+    <div style="margin-top: 20px;">
+      <h4>📊 Code Output</h4>
+      <div id="code-output" style="background: #000; color: #00ff00; padding: 10px; font-family: monospace; min-height: 100px; border-radius: 4px; overflow-y: auto; max-height: 200px;">
+        Ready to execute code...
+      </div>
+    </div>
   </div>
 
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
 
   <!-- Your JS Logic -->
   <script src="script.js"></script>
