@@ -9,55 +9,30 @@ let editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 });
 
 const languageExamples = {
-  javascript: `function greet(name) {
-  for (let i = 0; i < 5; i++) {
-    console.log("Hello, " + name);
-  }
-}
+  javascript: `// Start writing your JavaScript code here
+// Use the AI suggestions to help you code!
 
-greet("Replit");`,
-  python: `def greet(name):
-    for i in range(5):
-        print(f"Hello, {name}")
+`,
+  python: `# Start writing your Python code here
+# Use the AI suggestions to help you code!
 
-greet("Replit")`,
-  java: `public class HelloWorld {
-    public static void main(String[] args) {
-        for (int i = 0; i < 5; i++) {
-            System.out.println("Hello, Replit");
-        }
-    }
-}`,
-  cpp: `#include <iostream>
-using namespace std;
+`,
+  java: `// Start writing your Java code here
+// Use the AI suggestions to help you code!
 
-int main() {
-    for (int i = 0; i < 5; i++) {
-        cout << "Hello, Replit" << endl;
-    }
-    return 0;
-}`,
-  html: `<!DOCTYPE html>
-<html>
-<head>
-    <title>Hello World</title>
-</head>
-<body>
-    <h1>Hello, Replit!</h1>
-    <p>Welcome to my website</p>
-</body>
-</html>`,
-  css: `body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-}
+`,
+  cpp: `// Start writing your C++ code here
+// Use the AI suggestions to help you code!
 
-h1 {
-    color: #333;
-    text-align: center;
-}`
+`,
+  html: `<!-- Start writing your HTML code here -->
+<!-- Use the AI suggestions to help you code! -->
+
+`,
+  css: `/* Start writing your CSS code here */
+/* Use the AI suggestions to help you code! */
+
+`
 };
 
 function changeLanguage() {
@@ -92,7 +67,8 @@ async function callAI(promptText) {
 
 async function explainCode() {
   const code = editor.getSelection() || editor.getValue();
-  const prompt = `Explain the following JavaScript code clearly and briefly:\n\n${code}`;
+  const language = document.getElementById("language-select").value;
+  const prompt = `Explain the following ${language} code clearly and briefly:\n\n${code}`;
   updateSuggestion("⏳ Thinking...");
   const explanation = await callAI(prompt);
   updateSuggestion(explanation);
@@ -100,7 +76,8 @@ async function explainCode() {
 
 async function fixBug() {
   const code = editor.getValue();
-  const prompt = `Check this JavaScript code for bugs or improvements:\n\n${code}`;
+  const language = document.getElementById("language-select").value;
+  const prompt = `Check this ${language} code for bugs or improvements:\n\n${code}`;
   updateSuggestion("⏳ Analyzing...");
   const fix = await callAI(prompt);
   updateSuggestion(fix);
@@ -183,10 +160,5 @@ function updateSuggestion(text) {
   document.getElementById("suggestion-text").innerText = text;
 }
 
-editor.setValue(`function greet(name) {
-  for (let i = 0; i < 5; i++) {
-    console.log("Hello, " + name);
-  }
-}
-
-greet("Replit");`);
+// Set initial content to blank JavaScript template
+editor.setValue(languageExamples.javascript);
