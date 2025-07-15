@@ -1,16 +1,91 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>CodeCoach AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- CodeMirror CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+  
+  <!-- Custom Styling -->
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    #editor-wrapper {
+      margin-right: 300px;
+      height: 100vh;
+    }
+
+    .CodeMirror {
+      height: 100vh;
+    }
+
+    #ai-suggestions {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
+      background: #f9fafb;
+      border-left: 1px solid #ddd;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    #ai-suggestions h3 {
+      margin-top: 0;
+    }
+
+    #ai-suggestions button {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 10px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    #ai-suggestions button:hover {
+      background-color: #1d4ed8;
+    }
+
+    #suggestion-text {
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 
 <body>
-  Hello world
-  <script src="script.js"></script>
-</body>
 
+  <!-- Code Editor Container -->
+  <div id="code-editor-container">
+    <textarea id="code-editor">// Start coding here...</textarea>
+  </div>
+
+  <!-- AI Suggestion Sidebar -->
+  <div id="ai-suggestions">
+    <h3>💡 AI Suggestions</h3>
+    <div id="suggestion-text">No suggestions yet.</div>
+    <button onclick="explainCode()">🧠 Explain Code</button>
+    <button onclick="fixBug()">🛠 Fix Bug</button>
+    <button onclick="askQuestion()">❓ Ask Question</button>
+  </div>
+
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+
+  <!-- Your JS Logic -->
+  <script src="script.js"></script>
+
+</body>
 </html>
